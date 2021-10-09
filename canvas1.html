@@ -13,8 +13,6 @@
       box-sizing: border-box;
     }
     #canvas {
-      border: 1px solid red;
-
       display: block;
     }
   </style>
@@ -24,25 +22,37 @@
       canvas.width = document.documentElement.clientWidth;
       canvas.height = document.documentElement.clientHeight;
       var ctx = canvas.getContext("2d");
-
-      let x = false;
-
+      let xx = false;
       ctx.fillStyle = "black";
-      canvas.onmousedown = () => {
-        p = true;
-      };
-      canvas.onmousemove = (e) => {
-        if (p === true) {
-          ctx.beginPath();
-          ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
-          ctx.stroke();
-          ctx.fill();
-        } else {
-        }
-        canvas.onmouseup = () => {
-          p = false;
-        };
-      };
+
+      var isTouchDevice = "ontouchstart" in document.documentElement;
+
+      // if (isTouchDevice) {
+      //   canvas.ontouchmove = (e) => {
+      //     let x = e.touches[0].clientX;
+      //     let y = e.touches[0].clientY;
+      //     ctx.beginPath();
+      //     ctx.arc(x, y, 10, 0, 2 * Math.PI);
+      //     ctx.stroke();
+      //     ctx.fill();
+      //   };
+      // } else {
+      //   canvas.onmousedown = () => {
+      //     xx = true;
+      //   };
+      //   canvas.onmousemove = (x) => {
+      //     if (xx === true) {
+      //       ctx.beginPath();
+      //       ctx.arc(x.clientX, x.clientY, 10, 0, 2 * Math.PI);
+      //       ctx.stroke();
+      //       ctx.fill();
+      //     } else {
+      //       canvas.onmouseup = () => {
+      //         xx = false;
+      //       };
+      //     }
+      //   };
+      // }
     </script>
   </body>
 </html>
