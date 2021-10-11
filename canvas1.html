@@ -18,41 +18,65 @@
   </style>
   <body>
     <canvas id="canvas" width="100" height="100"> </canvas>
+
     <script>
       canvas.width = document.documentElement.clientWidth;
       canvas.height = document.documentElement.clientHeight;
       var ctx = canvas.getContext("2d");
-      let xx = false;
+      ctx.lineWidth = 10;
+      ctx.lineCap = "round";
       ctx.fillStyle = "black";
+      let xx = false;
+
+      let last;
 
       var isTouchDevice = "ontouchstart" in document.documentElement;
 
-      // if (isTouchDevice) {
-      //   canvas.ontouchmove = (e) => {
-      //     let x = e.touches[0].clientX;
-      //     let y = e.touches[0].clientY;
-      //     ctx.beginPath();
-      //     ctx.arc(x, y, 10, 0, 2 * Math.PI);
-      //     ctx.stroke();
-      //     ctx.fill();
-      //   };
-      // } else {
-      //   canvas.onmousedown = () => {
-      //     xx = true;
-      //   };
-      //   canvas.onmousemove = (x) => {
-      //     if (xx === true) {
-      //       ctx.beginPath();
-      //       ctx.arc(x.clientX, x.clientY, 10, 0, 2 * Math.PI);
-      //       ctx.stroke();
-      //       ctx.fill();
-      //     } else {
-      //       canvas.onmouseup = () => {
-      //         xx = false;
-      //       };
-      //     }
-      //   };
-      // }
+      if (isTouchDevice) {
+        canvas.touchstart = () => {
+          let x = e.touches[0].clientX;
+          let y = e.touches[0].clientY;
+          drawLine(last[0], last[1], x, y);
+          last = [x, y];
+        };
+        canvas.ontouchmove = (e) => {
+          let x = e.touches[0].clientX;
+          let y = e.touches[0].clientY;
+          ctx.beginPath();
+          ctx.arc(x, y, 10, 0, 2 * Math.PI);
+          ctx.stroke();
+          ctx.fill();
+        };
+      } else {
+        canvas.onmousedown = (e) => {
+          xx = true;
+          last = [e.clientX, e.clientY];
+          console.log(last);
+        };
+
+        canvas.onmousemove = (e) => {
+          if (xx === true) {
+            drawLine(last[0], last[1], e.clientX, e.clientY);
+            last = [e.clientX, e.clientY];
+            //圆点变线
+            // ctx.beginPath();
+            // ctx.arc(x.clientX, x.clientY, 10, 0, 2 * Math.PI);
+            // ctx.stroke();
+            // ctx.fill();
+          } else {
+            canvas.onmouseup = () => {
+              xx = false;
+            };
+          }
+        };
+        //画线获取点位
+        function drawLine(x1, y1, x2, y2) {
+          ctx.beginPath();
+          ctx.moveTo(x1, y1); //起始点
+          ctx.lineTo(x2, y2); //过程点
+          ctx.stroke(); //描线
+        }
+      }
     </script>
   </body>
 </html>
