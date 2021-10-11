@@ -27,7 +27,7 @@
       ctx.lineWidth = 10; //线的宽度
       ctx.lineCap = "round"; //线以圆形结尾不会出现锯齿
       ctx.fillStyle = "black"; //赋值背景色
-      let xx = false;
+      let painting = false;
       let last;
 
       var isTouchDevice = "ontouchstart" in document.documentElement;
@@ -42,39 +42,29 @@
           let y = e.touches[0].clientY;
           drawLine(last[0], last[1], x, y);
           last = [x, y];
-          // ctx.beginPath();
-          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
-          // ctx.stroke();
-          // ctx.fill();
         };
       } else {
         canvas.onmousedown = (e) => {
-          xx = true;
+          painting = true;
           last = [e.clientX, e.clientY];
         };
 
         canvas.onmousemove = (e) => {
-          if (xx === true) {
+          if (painting === true) {
             drawLine(last[0], last[1], e.clientX, e.clientY);
             last = [e.clientX, e.clientY];
-            //圆点变线
-            // ctx.beginPath();
-            // ctx.arc(x.clientX, x.clientY, 10, 0, 2 * Math.PI);
-            // ctx.stroke();
-            // ctx.fill();
           } else {
             canvas.onmouseup = () => {
-              xx = false;
+              painting = false;
             };
           }
         };
-        //画线获取点位
-        function drawLine(x1, y1, x2, y2) {
-          ctx.beginPath();
-          ctx.moveTo(x1, y1); //起始点
-          ctx.lineTo(x2, y2); //过程点
-          ctx.stroke(); //描线
-        }
+      }
+      function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
       }
     </script>
   </body>
